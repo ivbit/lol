@@ -1,0 +1,113 @@
+                        a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+                      a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+                    a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+                  a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+                a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+              a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+            a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+          a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+        a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+      a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 
+    a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1 a-3 a-3 b-3 b-1
+
+;; Example of game tree of small board 2x2
+;; (game-tree board player spare-dice first-move)
+(game-tree #((0 3)(0 3)(1 2)(1 2)) 0 0 t)
+
+( ; tree START
+  0 ; player
+  #((0 3) (0 3) (1 2) (1 2)) ; board
+  ( ; branch START
+    ( ; 1st subbranch START
+      (0 2) ; move
+      ( ; list containing entire new game tree after move '0 -> 2' START
+        0 ; player
+        #((0 1) (0 3) (0 2) (1 2)) ; board
+        ( ; list with 2 moves START
+          ( ; list with 1st move 'pass turn' START
+            NIL ; pass turn
+            ( ; list containing entire new game tree after move 'pass turn' START
+              1 ; player
+              #((0 2) (0 3) (0 2) (1 2)) ; board
+              NIL ; out of moves
+            ) ; list containing entire new game tree after move 'pass turn' END
+          ) ; list with 1st move 'pass turn' END
+          ( ; list with 2nd move '1 -> 3' START
+            (1 3)
+            ( ; list containing entire new game tree after move '1 -> 3' START
+              0 ; player
+              #((0 1) (0 1) (0 2) (0 2)) ; board
+              ( ; list with 1 move START
+                ( ; list with move 'pass turn' START
+                  NIL ; pass turn
+                  ( ; list containing entire new game tree after move 'pass turn' START
+                    1 ; player
+                    #((0 2) (0 2) (0 3) (0 2)) ; board
+                    NIL ; out of moves
+                  ) ; list containing entire new game tree after move 'pass turn' END
+                ) ; list with move 'pass turn' END
+              ) ; list with 1 move END
+            ) ; list containing entire new game tree after move '1 -> 3' END
+          ) ; list with 2nd move '1 -> 3' END
+        ) ; list with 2 moves END
+      ) ; list containing entire new game tree after move '0 -> 2' END
+    ) ; 1st subbranch END
+    ( ; 2nd subbranch START
+      (0 3)
+      ( ; list containing entire new game tree after move '0 -> 3' START
+        0 ; player
+        #((0 1) (0 3) (1 2) (0 2)) ; board
+        (
+          (
+            NIL ; pass turn
+            (
+              1 ; player
+              #((0 2) (0 3) (1 2) (0 2)) ; board
+              NIL ; out of moves
+            )
+          )
+        )
+      ) ; list containing entire new game tree after move '0 -> 3' END
+    ) ; 2nd subbranch END
+    ( ; 3rd subbranch START
+      (1 3)
+      ( ; list containing entire new game tree after move '1 -> 3' START
+        0 ; player
+        #((0 3) (0 1) (1 2) (0 2)) ; board
+        (
+          (
+            NIL ; pass turn
+            (
+              1 ; player
+              #((0 3) (0 2) (1 2) (0 2)) ; board
+              NIL ; out of moves
+            )
+          )
+          (
+            (0 2)
+            (
+              0 ; player
+              #((0 1) (0 1) (0 2) (0 2)) ; board
+              (
+                (
+                  NIL ; pass turn
+                  (
+                    1 ; player
+                    #((0 2) (0 2) (0 3) (0 2)) ; board
+                    NIL ; out of moves
+                  )
+                )
+              )
+            )
+          )
+        )
+      ) ; list containing entire new game tree after move '1 -> 3' END
+    ) ; 3rd subbranch END
+  ) ; branch END
+) ; tree END
+
+;; tree is
+; (player board ( (move1 (tree)) ) )
+; (player board ( (move1 (tree)) (move2 (tree)) (move3 (tree)) ) )
+; vim:ft=lisp
+
