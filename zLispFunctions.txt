@@ -1,0 +1,496 @@
+
+
+;; vim:ft=lisp
+(defun clear () (ext:run-shell-command "clear") 'cleared)
+(defun clear () (ext:run-program "/usr/bin/clear") 'cleared)
+(defun clear () (sb-ext:run-program "/usr/bin/clear" 'nil :input 'nil :output *standard-output*) 'cleared)
+(defun clear () (sb-ext:run-program "/usr/bin/clear" '() :input '() :output *terminal-io*) 'cleared)
+(defun clear () (sb-ext:run-program "/usr/bin/clear" '() :input '() :output sb-sys:*stdout*) 'cleared)
+(defun clear () (ccl:run-program "/usr/bin/clear" 'nil :input 'nil :output *standard-output*) 'cleared)
+(defun clear () (ccl:run-program "/usr/bin/clear" '() :input '() :output *terminal-io*) 'cleared)
+(defparameter *foo* 100)
+(defvar *foo* 5)
+(defun something () (ash (+ 50 100) -1) )
+(setf *foo* 32)
+(let ( (a 5) (b 6) ) (+ a b) )
+(flet ( (f (n) (+ n 10) ) ) (f 5) )
+(labels ( (a (n) (+ n 5) ) (b (n) (+ (a n) 6) ) ) (b 10) )
+(eq 'fooo 'FoOo)
+(expt 53 53)
+(abs -114)
+(princ "Hello \"World\" \\there\\!")
+(cons 'chicken 'cat)
+(cons 'pork '(beef chicken))
+(car '(pork beef chicken))
+(cdr '(pork beef chicken))
+(list 'pork 'beef 'chicken)
+(list 'quote *foo*)
+(cadadr '((peas carrots tomatoes) (pork beef chicken) duck))
+(if '() 'i-am-true 'i-am-false)
+(defun my-length (the-list) (if the-list (1+ (my-length (cdr the-list) ) ) 0) )
+(my-length '(list with four symbols))
+(1- 33)
+(if (oddp 5) 'odd-number 'even-number)
+(if (oddp 5) (progn (setf *number-was-odd* t) 'odd-number) 'even-number)
+(when (oddp 5) (setf *number-is-odd* t) 'odd-number)
+(unless (oddp 4) (setf *number-is-odd* nil) 'even-number)
+(defun pudding-eater (person) (cond ((eq person 'henry) (setf *arch-enemy* 'alien) '(lisp alien)) (t '(you))))
+(defun pudding-eater (person) (case person ((henry) 'lisp-alien) (otherwise 'you)))
+(and (oddp 5) (oddp 7) (oddp 9))
+(or (oddp 4) (oddp 7) (oddp 8))
+(or (oddp 4) (setf *is-it-even* t))
+(and *file-modified* (ask-user-about-saving) (save-file))
+(if (member 1 '(3 4 1 5)) 'one-is-in-the-list 'one-is-not-in-the-list)
+(find-if #'oddp '(2 4 5 6))
+(null 'nil)
+(eq 'apple 'apple)
+(equal '(1 2 3) (cons 1 (cons 2 (cons 3 nil))))
+(eql 3.4 3.4)
+(equalp "Bob Smith" "bob smith")
+(string-equal "Bob Smith" "bob smith")
+(= 1 1.0)
+(char-equal #\a #\a)
+(assoc 'garden *nodes*)
+(defun describe-path (edge) `(there is a ,(caddr edge) going ,(cadr edge) from here.))
+;; Maximum number of arguments to a function is stored in this variable (affects 'apply' function):
+call-arguments-limit ; clisp: 4096, Sbcl: 4611686018427387903, Clozure: 65536
+(defun describe-paths (location edges) (apply #'append (mapcar #'describe-path (cdr (assoc location edges)))))
+(mapcar #'+ '(1 2 3 4 5) '(6 7 8 9 10))
+(mapcar #'+ '(1 2 3 4) '(5 6 7 8) '(9 10 11 12))
+(apply #'mapcar #'+ '((1 2 3 4) (5 6 7 8) (9 10 11 12)))
+(mapcar #'sqrt '(1 2 3 4 5))
+(apply #'mapcar #'sqrt '((1 2 3 4 5 6 7 8 9)))
+(mapcar (function car) '((foo bar) (baz qux)))
+(mapcar #'cons '(a b c d e f g h) '(1 2 3 4 5 6 7 8))
+(mapcar #'cons '(a b c d) '(1 2 3 4 5 6 7 8))
+(mapcar #'cons '(a b c d e f g h) '(1 2 3))
+(mapcar #'list '(a b c d e f g h) '(1 2 3))
+(mapc #'sqrt '(9 16 121))
+(append '(mary had) '(a) '(little lamb))
+(apply #'append '((mary had) (a) (little lamb)))
+(remove-if-not #'at-loc-p objs)
+(find direction (cdr (assoc *location* *edges*)) :key #'cadr)
+(find 'y '((5 x) (3 y) (7 z)) :key #'cadr)
+(push (list object 'body) *object-locations*)
+'(foo bar abc xyz)
+`(foo ,bar abc ,(cdr *something*) xyz)
+#\Newline
+#\Tab
+#\Space
+#\Escape
+(not 'FOO)
+(defparameter *foo* (read))
+(defparameter *foo* (read-line))
+(read-from-string "(foo)")
+(print "Hello World")
+(princ "Hello World")
+(prin1 "Hello World")
+(prin1-to-string "Hello World")
+(eval '(+ 1 2))
+(concatenate 'string "Hello" " " "World" "!")
+(coerce "foo" 'list)
+(coerce '(#\f #\o #\o) 'string)
+(char-upcase #\a)
+(char-downcase #\A)
+(string-downcase "LISP")
+(string-upcase "lisp")
+(string-trim "() " " (Hello World!) ")
+(fresh-line)
+(progn (princ 22) (terpri) (princ 33))
+(progn (princ 22) (terpri) (terpri) (terpri) (princ 33))
+(mapcar (lambda (n) (/ n 2)) '(2 4 6))
+(cons (car '(foo bar baz)) (mapcar (lambda (x) (list 'quote x)) (cdr '(foo bar baz))))
+(setf *print-length* 1000) ; for a huge list will print only the first 1000 elements to the repl
+(setf *print-circle* t) ; set before using circular lists
+(defparameter *foo* '(1 2 3))
+(setf (cdddr *foo*) *foo*) ; circular list #1=(1 2 3 . #1#)
+(setf *foo* (subseq *foo* 0 32)) ; turn *foo* back to normal list with 32 elements from circular list
+(nconc *foo* *foo*) ; turn *foo* into circular list #1=(1 2 3 1 2 3 1 2 3 1 2 3 1 2 3 1 2 3 1 2 3 1 2 3 1 2 3 1 2 3 1 2 . #1#)
+(loop for item in *foo* repeat 10 collect item)
+(substitute-if #\_ (complement #'alphanumericp) (prin1-to-string exp))
+(substitute-if #\e #'digit-char-p "I'm a l33t hack3r!")
+(substitute-if 0 #'oddp '(1 2 3 4 5 6 7 8))
+(defparameter *foo* (write-to-string '(foo bar baz) :pretty nil))
+(length "hello world")
+(list-length '(1 2 3 4 5 6 7 8))
+(subseq "hello world" 0 5)
+(with-open-file (my-stream "testfile.txt" :direction :output :if-exists :supersede) (princ "Hello" my-stream))
+:keyword
+*standard-output*
+(funcall thunk)
+(funcall (lambda () (* 4 6 7)))
+(funcall (lambda (x) (* x 4 6 7)) 111)
+(funcall (lambda (x) (* x x x x)) 8)
+(maplist #'print '(a b c))
+(mapl #'print '(1 2 3 4))
+(load "graph-util")
+(loop repeat 10 collect 1)
+(loop repeat 10 collect (random 100))
+(loop for n from 1 to 10 collect n)
+(loop for n from 1 to 10 collect (+ 100 n))
+(loop for i below 10 collect (1+ i))
+(set-difference '(a b c x y z) '(y b c d))
+(let* ((a 5) (b (+ a 2))) b)
+(zerop (random 4))
+(remove-duplicates '(a b c x b c z x y) :test #'equal)
+(intersection '(a b c x y z) '(n b c m t z))
+(some #'= '(1 2 3 4) '(3 4 5 4))
+(some #'= '(1 2 3 4 5) '(5 4 3 2 1))
+(mapcan #'print '((foo bar) (baz ber) (zyx xyz)))
+(defparameter x (make-array 3))
+(setf (aref x 1) 'foo)
+(aref x 1)
+(aref x (random 3))
+(defparameter *foo* '(a b c))
+(setf (second *foo*) 'z)
+(tenth '(a b c d e f g h i j k l m n o p q r s t u v w x y z))
+(nth 20 '(a b c d e f g h i j k l m n o p q r s t u v w x y z))
+(first '(1 2 3 4))
+(equal (first '(1 2 3 4)) (car '(1 2 3 4)))
+(rest '(1 2 3 4))
+(equal (rest '(1 2 3 4)) (cdr '(1 2 3 4)))
+(last '(1 2 3 4))
+(defparameter *x* (make-hash-table))
+(setf (gethash 'yup *x*) '25)
+(gethash 'yup *x*)
+(push 400 (gethash 'yup *x*))
+(remhash 'yup *x*)
+(loop for key being the hash-keys of *x* collect key)
+(loop for key being the hash-keys of *x* collect (gethash key *x*))
+(loop for key being the hash-keys of *x* collect (cons key (gethash key *x*)))
+(loop for key being the hash-keys of *x* collect (list key (list (gethash key *x*))))
+(round 2.4)
+(values 3 7)
+(defun foo () (values 3 7))
+(multiple-value-bind (a b) (foo) (* a b))
+(multiple-value-list (values 'hello 'world))
+(time (print "Hello World"))
+(dotimes (i 10) (print i))
+(defstruct person name age waist-size favorite-color)
+(defparameter *bob* (make-person :name "Bob" :age 35 :waist-size 32 :favorite-color "blue"))
+(person-age *bob*)
+(setf (person-age *bob*) 36)
+(defparameter *that-guy* #S(PERSON :NAME "Bob" :AGE 35 :WAIST-SIZE 32 :FAVORITE-COLOR "blue"))
+(person-age *that-guy*)
+(person-name *that-guy*)
+(find-if #'numberp '(a b 5 d))
+(count #\s "mississippi")
+(count 22 '(1 34 22 55 22 66 54 22 11))
+(position #\4 "2kewl4skewl")
+(some #'numberp '(a b 5 d)
+(every #'numberp '(1 32 5 6 2/3))
+(reduce #'+ '(3 4 6 5 2))
+(reduce #'+ '(3 4 6 5 2) :initial-value 44)
+(reduce (lambda (best item) (if (and (evenp item) (> item best)) item best)) '(7 4 6 5 2) :initial-value 0)
+(defun sum (lst) (reduce #'+ lst))
+(defun my-length (lst) (reduce (lambda (acc item) (1+ acc)) lst :initial-value 0))
+;; Suppress warning "The variable is defined but never used"
+(defun my-length (lst) (reduce (lambda (acc item) (declare (ignore item)) (1+ acc)) lst :initial-value 0))
+(sum '(1 2 3))
+(sum (make-array 5 :initial-contents '(1 2 3 4 5)))
+(princ #\ALARM_CLOCK)
+(map 'list (lambda (x) (if (eq x #\s) #\S x)) "this is a string")
+(concatenate 'string (map 'list (lambda (x) (if (eq x #\s) #\S x)) "this is a string"))
+(map 'string (lambda (x) (if (eq x #\s) #\S x)) "this is a string")
+(subseq "america" 2 6)
+(sort '(5 8 2 4 9 3 6) #'<)
+; type predictates: arrayp, characterp, consp, functionp, hash-table-p, listp, stringp, symbolp
+(defun add (a b) (cond ((and (numberp a) (numberp b)) (+ a b)) ((and (listp a) (listp b)) (append a b))))
+(defmethod add ((a number) (b number)) (+ a b))
+(defmethod add ((a list) (b list)) (append a b))
+(add 3 5)
+(add '(a b) '(c d))
+(max 12 777 33 7)
+(truncate (/ 111 15))
+(<= 4 5)
+(finish-output)
+(force-output)
+(integerp 55)
+(map 'vector (lambda (x) (random 100)) (make-array 12))
+(incf *x*)
+(incf *x* 232)
+(decf *x*)
+(decf *x* 11)
+(defstruct monster (health (random 10)))
+(make-monster)
+(monster-health (make-monster))
+(type-of 22)
+(type-of (make-monster))
+(defstruct (orc (:include monster)) (club-level (random 8)))
+(defmethod monster-show ((m orc)) (princ (orc-club-level m)) (princ " club"))
+(monster-show (make-orc))
+(monster-p (make-monster))
+(orc-p (make-orc))
+(loop for i in '(1 2 3) do (print i) finally (return (* i i i)))
+(loop named outer for i below 10 do (loop named inner for x below i when (= x 2) do (return-from outer 'kicked)))
+(let ((animal-nu (copy-structure animal)) (genes (copy-list (animal-genes animal)))))
+(parse-integer "3361Z20" :junk-allowed t)
+(princ (reverse (format 'NIL "Add onion rings for only ~$ dollars more!" 1.5)))
+(format t "Add onion rings for only ~$ dollars more!" 1.5)
+(format t "I wish I had ~$ dollars in my bank account." 1000000.2)
+(format t "I am prin1ing ~s in the middle of this sentence." "FOO")
+(format t "I am princing ~a in the middle of this sentence." "FOO")
+(format t "I am printing ~10a within ten spaces of room." "FOO")
+(format t "I am princing ~10@a within ten spaces of room." "FOO")
+(format t "I am princing ~10,3a within ten (or more) spaces of room." "FOO")
+(format t "I am princing ~,,4a in the middle of this sentence." "FOO")
+(format t "I am princing ~,,4@a in the middle of this sentence." "FOO")
+(format t "The word ~,,4,'!a feels very important." "FOO")
+(format t "The word ~,,4,'!@a feels very important." "FOO")
+(format t "~33,,,'0a" 27)
+(format t "The number 1000 in hexadecimal is ~x" 1000)
+(format t "The number 1000 in octal is ~o" 1000)
+(format t "The number 1000 in binary is ~b" 1000)
+(format t "The number 1000 in decimal is ~d" 1000)
+(format t "Numbers with commas in them are ~:d times better." 1000000)
+(format t "I am printing ~10d within ten spaces of room" 1000000)
+(format t "I am printing ~10,'xd within ten spaces of room" 1000000)
+(format t "~2,'0d " 4)
+(loop for y below 10 do (progn (fresh-line) (loop repeat (- 10 y) do (princ "  ")) (loop for x below 10 for f = (+ x (* 10 y)) do (format t "~2,'0d " f))))
+(format t "~12,,,'0@<~d~>" 27)
+(format t "PI can be estimated as ~4f" 3.141593)
+(format t "PI can be estimated as ~,4f" pi)
+(format t "Percentages are ~,,2f percent better than fractions" 0.77)
+(progn (format t "this is on one line ~%") (format t "~%this is on another line"))
+(progn (format t "this is on one line ~&") (format t "~&this is on another line"))
+(format t "This will print ~5%on two lines spread far apart.")
+(defun random-animal () (nth (random 5) '("dog" "tick" "tiger" "walrus" "kangaroo")))
+(loop repeat 10 do (format t "~5t~a ~15t~a ~25t~a~%" (random-animal) (random-animal) (random-animal)))
+(loop repeat 10 do (format t "~30<~a~;~a~;~a~>~%" (random-animal) (random-animal) (random-animal)))
+(loop repeat 10 do (format t "~30:@<~a~>~%" (random-animal)))
+(loop repeat 10 do (format t "~30:@<~a~;~a~;~a~>~%" (random-animal) (random-animal) (random-animal)))
+(loop repeat 10 do (format t "~10:@<~a~>~10:@<~a~>~10:@<~a~>~%" (random-animal) (random-animal) (random-animal)))
+(defparameter *animals* (loop repeat 10 collect (random-animal)))
+(format t "~{I see a ~a! ~}" *animals*)
+(format t "~{I see a ~a... or was it a ~a?~%~}" *animals*)
+(format t "|~{~<|~%|~,33:;~2d ~>~}|" (loop for x below 100 collect x))
+(format t "| ~{~<|~%| ~,33:;~2d ~>~}|" (loop for x below 100 collect x))
+(format t "~c[1;32;40mHello~c[0m World!~%" #\Escape #\Escape)
+;; format's destination parameter
+; t      print the value to a console, return 'NIL
+; nil    return value as a string
+; stream write the data to an output stream
+;; format's control sequences:
+; ~c        prints the character as if by using write-char if it is a simple character.
+; ~$        monetary floating point value
+; ~s        prin1
+; ~a        princ
+; ~10a      princ with right padding
+; ~10@a     princ with left padding
+; ~10s      prin1 with right padding
+; ~10@s     prin1 with left padding
+; ~10,3a    add spaces in groups of 3 instead of just 1 ('3' is a 2nd parameter; ',' is a separator for parameters)
+; ~,,4a     exactly 4 spaces to the right (3rd parameter)
+; ~,,4@a    exactly 4 spaces to the left (3rd parameter)
+; ~,,4,'!a  specify character to be used for right padding (4th parameter)
+; ~,,4,'!@a specify character to be used for left padding (4th parameter)
+; Integers:
+; ~x        hexadecimal
+; ~b        binary
+; ~d        decimal
+; ~:d       ',' as digit group separator
+; ~10d      padding
+; ~10,'xd   'x' as a padding character
+; Floating-point numbers:
+; ~4f       value display witdh of 4
+; ~,4f      number of digits after decimal point (2nd character)
+; ~,,2f     multiply by 10^2 (3rd parameter)
+; Strings:
+; ~%        new-line (like 'terpri')
+; ~&        new-line (like 'fresh-line')
+; ~5%       5 new-lines (1st parameter)
+; ~5&       5 new-lines (1st parameter)
+; ~5t~a     table with column starting at 5th character position ("~5t~a ~15t~a ~25t~a~%")
+; ~30<      start justifying (initiating a block of justified text, whole thing should be 30 spaces wide)
+; ~;        new item separator (as in "~30<~a~;~a~;~a~>~%"), indicates where extra spaces should be inserted
+; ~>        stop justifying
+; ~30:@<    create a centered column
+; ~:;       causes text to be broken into pieces of equal length
+; ~,33:;    when inside justification, control string preceding this sentence (|~%|) is triggered if cursor position beyond 33 (2nd parameter)
+; Lists:
+; ~{        start iterating through list
+; ~}        stop iterating through list
+(defparameter *directions* '((q . -65) (w . -64) (e . -63) (a . -1) (d . 1) (z . 63) (x . 64) (c . 65)))
+(assoc 'w *directions*)
+(sort (loop for (k . d) in *directions* collect (cons d k)) '> :key #'car)
+; clisp, clozure: *standard-input* *standard-output* #<IO SYNONYM-STREAM *TERMINAL-IO*>
+; sbcl: *standard-input* #<SYNONYM-STREAM :SYMBOL SB-SYS:*STDIN*>, *standard-output* #<SYNONYM-STREAM :SYMBOL SB-SYS:*STDOUT*>
+(output-stream-p *standard-output*)
+(write-char #\x *standard-output*)
+(input-stream-p *standard-input*)
+(read-char *standard-input*)
+(read-char *terminal-io*)
+(print 'foo *standard-output*)
+(with-open-file (my-stream "data.txt" :direction :output) (print "my data" my-stream))
+(with-open-file (my-stream "./data.txt" :direction :output) (print "my data" my-stream) (fresh-line my-stream))
+(with-open-file (my-stream "data.txt" :direction :input) (read my-stream))
+(let ((animal-noises '((dog . woof) (cat . meow)))) (with-open-file (my-stream "animal-noises.txt" :direction :output) (print animal-noises my-stream)))
+(with-open-file (my-stream "animal-noises.txt" :direction :input) (read my-stream))
+(with-open-file (my-stream "data.txt" :direction :output :if-exists :error) (print "my data" my-stream))
+(with-open-file (my-stream "data.txt" :direction :output :if-exists :supersede) (print "new data" my-stream))
+;; clisp network sockets (socket is IP address + port)
+(defparameter my-socket (socket-server 4321))
+(defparameter my-stream (socket-accept my-socket))
+(defparameter my-stream (socket-connect 4321 "127.0.0.1"))
+(print "Yo Server!" my-stream)
+(read my-stream)
+(print "What up, Client!" my-stream)
+(read my-stream)
+; run (close my-stream) on both server and client, (socket-server-close my-socket) on the server
+(close my-stream)
+(socket-server-close my-socket)
+;; String streams
+(defparameter foo (make-string-output-stream))
+(princ "This will go into foo. " foo)
+(princ "This will also go into foo. " foo)
+(get-output-stream-string foo)
+(with-output-to-string (*standard-output*) (princ "the sum of ") (princ 5) (princ " and ") (princ 2) (princ " is ") (princ (+ 2 5)))
+(error "foo")
+(define-condition foo () () (:report (lambda (condition stream) (princ "Stop FOOing around, numbskull!" stream))))
+(error 'foo)
+(defun bad-function () (error 'foo))
+(handler-case (bad-function) (foo () "somebody signaled foo!") (bar () "somebody signaled bar!"))
+(unwind-protect (/ 1 0) (princ "I need to say 'flubyduby' matter what"))
+(coerce (list #\3 #\f) 'string)
+(parse-integer "3f" :radix 16 :junk-allowed t)
+(code-char 63)
+(char-code #\Escape)
+(char-code #\Return)
+(char-code #\Linefeed)
+(char-code #\Newline)
+(char-code #\Tab)
+(defun chaaa (c1 c2 &optional (default #\Space)) (print default))
+(progn (princ (code-char 171)) (princ 'lisp) (princ (code-char 187)) '())
+(let ((esc (code-char 27))) (princ esc) (princ "[31mHello") (princ esc) (princ "[0m World!") '())
+;; add symbol to the current package, remove symbol from the current package
+(intern "hello")
+(symbol-package 'hello)
+(symbol-name 'hello)
+(unintern 'hello)
+(defparameter *baz* "hello")
+(boundp '*baz*)
+(symbol-value '*baz*)
+(defun *baz* () (/ 4435 44.0))
+(fboundp '*baz*)
+(symbol-function '*baz*)
+;; remove value from symbol's slot, remove function from symbol's slot
+(makunbound '*baz*)
+(fmakunbound '*baz*)
+(let ((s "hello world there")) (subseq s (1+ (position #\Space s)) (position #\Space s :from-end t)))
+(make-string-input-stream "string")
+(let ((s (make-string 7))) (read-sequence s (make-string-input-stream "hello world there")) s)
+'( ; Firefox request header START
+(HOST . "127.0.0.1:8080") (USER-AGENT . "Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101 Firefox/102.0")
+(ACCEPT . "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+(ACCEPT-LANGUAGE . "en-US,en;q=0.7,ru;q=0.3") (ACCEPT-ENCODING . "gzip, deflate, br") (DNT . "1")
+(CONNECTION . "keep-alive") (UPGRADE-INSECURE-REQUESTS . "1") (SEC-FETCH-DEST . "document")
+(SEC-FETCH-MODE . "navigate") (SEC-FETCH-SITE . "none") (SEC-FETCH-USER . "?1")
+) ; Firefox request header END
+'( ; Chromium request header START
+(HOST . "127.0.0.1:8080") (CONNECTION . "keep-alive") (CACHE-CONTROL . "max-age=0")
+(SEC-CH-UA . "\"Not:A-Brand\";v=\"99\", \"Chromium\";v=\"112\"") (SEC-CH-UA-MOBILE . "?0")
+(SEC-CH-UA-PLATFORM . "\"Linux\"") (UPGRADE-INSECURE-REQUESTS . "1")
+(USER-AGENT . "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36")
+(ACCEPT . "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+(SEC-FETCH-SITE . "none") (SEC-FETCH-MODE . "navigate") (SEC-FETCH-USER . "?1") (SEC-FETCH-DEST . "document")
+(ACCEPT-ENCODING . "gzip, deflate, br") (ACCEPT-LANGUAGE . "en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7")
+) ; Chromium request header END
+;; call lambda function directly
+((lambda (x) (* x 2)) 4)
+(dolist (x '(a b c d e)) (print x))
+(dolist (i '((a b c) (d e f) (g h i))) (dolist (j i) (print j)))
+(dolist (i '((a b c) (d e f) (g h i))) (mapcar #'print i))
+(defun my-reverse (my-list) (let (new-list) (dolist (x my-list) (setf new-list (cons x new-list))) new-list))
+(my-reverse '(a b c d e f g))
+;; Closure (closed expression)
+(let ((bar 11)) (defun *foo* () (incf bar)))
+(fmakunbound '*foo*)
+;; Return SYMBOL's current function definition. Settable with SETF.
+(symbol-function 'describe)
+;; Enable tail call optimization in CLISP:
+(compile 'my-length)
+;; &rest - refer to all arguments equally as a single aggregation
+(defun *foo* (&rest x) (print x))
+(*foo* 'foo 'bar 'baz)
+(loop for y below 3 do (loop for x below 3 do (print (+ x (* 3 y)))))
+(loop for x from 1025 to 1105 do (progn (princ x) (princ #\Space) (princ (code-char x)) (fresh-line)))
+(loop for x from 160 to 255 do (progn (princ x) (princ #\Space) (princ (code-char x)) (fresh-line)))
+(princ (code-char 8364))
+(princ (code-char 8381))
+;; ,xs - put rest values in a list: (+ (* 2 (3 4 5 6 7)) 1); ,@xs - just the values: (+ (* 2 3 4 5 6 7) 1)
+(defun exprbis (&rest xs) `(+ (* 2 ,@xs) 1))
+(exprbis 3 4 5 6 7)
+;; mapcan uses nconc
+(nconc '(foo bar) '(abc xyz))
+(nconc '(foo bar) '(abc xyz) 'nil '(zzz eee))
+(list '(foo bar) '(abc xyz) 'nil '(zzz eee))
+(coerce '(#\BLACK_SUN_WITH_RAYS #\ALARM_CLOCK #\FIRE #\PILE_OF_POO) 'string)
+(defmacro let1 (var val &body body) `(let ((,var ,val)) ,@body))
+(macro-function 'let1)
+(describe (macro-function 'let1))
+(macroexpand '(let1 foo (+ 2 3) (* foo foo)))
+(gensym) ; generate random variable name
+(defmacro split (val yes no) (let1 g (gensym) `(let1 ,g ,val (if ,g (let ((head (car ,g)) (tail (cdr ,g))) ,yes) ,no))))
+`(mapcar in code mode ,@(mapcar #'1+ `(1 2 ,(* 3 7) 4 5 6))) ; (MAPCAR IN CODE MODE 2 3 22 5 6 7)
+(loop for (a b) in '((1 2) (3 4) (5 6)) do (format t "~a and ~a; " a b))
+(loop for (a b) on '(0 1 2 3 4 5 6 7 8 9) by #'cddr collect (cons a b))
+(mapcar (lambda (x) (list x t)) '(1 2 3 4 5 6 7))
+(mapcan (lambda (x) (list x t)) '(1 2 3 4 5 6 7)) ; Return NCONC of FUNCTION return values.
+(apply #'nconc '((1 2) (3 4) (5 6))) ; nconc changes the variable containing the list, if variable provided: (apply #'nconc *foo*)
+(apply #'append '((1 2) (3 4) (5 6)))
+(apply #'concatenate (append '(list) '((1 2) (3 4) (5 6))))
+(pushnew '(1) lst :test 'equal :key #'car)
+(setf lst (adjoin '(1) lst :test 'equal :key #'car))
+(defparameter *str* (copy-seq "0123456789"))
+(elt *str* 6)
+(setf (elt *str* 0) #\#) ; "#123456789"
+(compile nil '(lambda (x) (* x x))) ; returns compiled squaring function
+(funcall (compile nil '(lambda (x) (* x x))) 256)
+;; Applies FUNCTION to respective element(s) of each LIST, appending all the result lists to a single list. FUNCTION must return a list.
+(defun mappend (fun &rest lists)
+  (loop
+    for results in (apply #'mapcar fun lists)
+    append results
+  ) ; loop END
+) ; defun END
+;; Higher order functions and &rest
+(defun fetch-indexes (lst &rest indexes) (mapcar (lambda (index) (nth index lst)) indexes))
+;; Loop macro and &rest
+(defun fetch-indexes (lst &rest indexes) (loop :for index :in indexes :collect (nth index lst)))
+(fetch-indexes '(a b c d) 2 3 0 1)
+;; This is the recommended way to test for the end of a proper list.
+(endp '())
+;; Return true if OBJECT is an ATOM, and NIL otherwise.
+(atom 'foo)
+;; Variables that contain huge positive and negative numbers:
+most-negative-fixnum ; Clisp -281474976710656, Sbcl -4611686018427387904, Clozure -1152921504606846976
+most-positive-fixnum ; Clisp 281474976710655, Sbcl 4611686018427387903, Clozure 1152921504606846975
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
