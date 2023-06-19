@@ -411,5 +411,8 @@
   ) ; labels END
 ) ; defun add-new-dice END
 
+; (play-vs-human (game-tree (gen-board) 0 0 t))
+; (play-vs-computer (game-tree (gen-board) 0 0 t))
+
 ; (serve #'dod-request-handler)
 ; http://localhost:8080/game.html
